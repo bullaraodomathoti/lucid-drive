@@ -265,3 +265,51 @@ showing camera fields of view, LiDAR coverage rings, and radar beam directions.
   RL/RR~=~rear-left/-right; FF/RF~=~front/rear fisheye.}
 \label{fig:sensor_config}
 \end{figure}
+
+
+%% ── Figure 3: Sensor Data Samples ───────────────────────────────────────────
+\begin{figure*}[htbp]
+\centering
+
+%% Row 1 — Camera
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=0.92\linewidth]{figures/sample_camera.png}\\[2pt]
+  \small\textbf{(a)} Front-Centre Camera frame (1920$\times$1080) with 2D bounding-box
+  detections overlaid. Green boxes: vehicles; yellow box: pedestrian.
+  Confidence scores from the pre-annotation object detector are shown above each box.
+\end{minipage}
+
+\vspace{8pt}
+
+%% Row 2 — LiDAR + Radar side by side
+\begin{minipage}{0.46\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/sample_lidar.png}\\[2pt]
+  \small\textbf{(b)} 64-beam rooftop LiDAR bird's-eye-view (BEV) point cloud.
+  Cyan boxes: 3D object track projections. Yellow cluster: pedestrian.
+  Orange rectangle: ego vehicle. Grey rings mark 10\,m range increments.
+\end{minipage}
+\hfill
+\begin{minipage}{0.50\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/sample_radar.png}\\[2pt]
+  \small\textbf{(c)} Front-centre mmWave radar output. \textit{Left}: Range--Doppler
+  (range--velocity) heatmap; targets circled in cyan with radial velocity labels.
+  Dashed line separates approaching (negative) from receding (positive) objects.
+  \textit{Right}: Radar BEV with velocity vectors (arrow length $\propto$ speed).
+\end{minipage}
+
+\vspace{4pt}
+\caption{Representative sensor data samples from a single \lucid{} scenario
+  (Scenario ID: SC-00842; urban intersection, daytime, clear weather).
+  All three modalities are hardware-synchronised to within 1\,ms via PTP.
+  \textbf{(a)} Camera RGB frame with 2D bounding-box annotations.
+  \textbf{(b)} 64-beam LiDAR BEV point cloud with projected 3D track boxes.
+  \textbf{(c)} Front-centre radar range--Doppler map and BEV detection plot
+  with radial-velocity vectors.
+  The simultaneous availability of all modalities at each timestep enables
+  rich multi-sensor fusion research and causal annotation grounded in
+  complementary sensory evidence.}
+\label{fig:sensor_samples}
+\end{figure*}
