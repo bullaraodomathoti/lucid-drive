@@ -1,0 +1,101 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Autonomous driving (AD) systems have advanced remarkably over the past decade, progressing
+from rule-based lane-keeping assistants to sophisticated neural architectures capable of
+navigating complex urban environments~\cite{caesar2020nuscenes,sun2020scalability,
+geiger2012we}. Yet a fundamental limitation persists: contemporary end-to-end systems
+remain opaque. They cannot articulate \emph{why} they braked at a particular intersection,
+\emph{how} they anticipated a pedestrian's trajectory, or \emph{what} would have occurred had
+a different manoeuvre been chosen. This lack of interpretability erodes public trust,
+complicates regulatory approval, and makes post-incident analysis arduous.
+
+Large language models (LLMs) offer a compelling avenue toward explainability. Equipped with
+broad world knowledge, rich commonsense priors, and the ability to generate fluent natural
+language, models such as GPT-4~\cite{openai2023gpt4}, LLaMA~\cite{touvron2023llama2}, and
+Gemini~\cite{google2023gemini} have demonstrated impressive performance on scene understanding,
+question answering, and instruction-following tasks. When integrated with perception backbones
+via vision-language interfaces~\cite{radford2021learning,li2023blip2,liu2023visual},
+these models can reason over visual scenes and generate human-readable explanations of
+driving decisions.
+
+\subsection*{The Causal Reasoning Gap}
+
+Despite rapid progress, the \emph{data infrastructure} required to train and rigorously
+benchmark LLM-based driving agents for causal and counterfactual reasoning remains immature.
+Existing language-annotated driving datasets can be broadly divided into two categories.
+\emph{Perception-centric} datasets (\eg{} NuScenes-QA~\cite{qian2024nuscenes_qa},
+STRIDE-QA~\cite{wu2024stride}, Box-QAymo~\cite{boxqaymo2024}) annotate object existence,
+spatial relations, and attribute recognition but do not model the \emph{causal structure}
+of driving events.
+\emph{Explanation-centric} datasets (\eg{} BDD-X~\cite{kim2018textual},
+HAD~\cite{chen2019had}, DRAMA~\cite{malla2023drama}) provide post-hoc rationale for
+driving decisions but are limited in scale, geographic diversity, and the depth of
+counterfactual exploration.
+
+No existing benchmark answers questions of the form:
+\begin{enumerate}[leftmargin=2em, noitemsep]
+  \item \emph{``Why did the vehicle decelerate sharply at time $t$?''} (causal QA)
+  \item \emph{``What would have happened if the cyclist had not swerved left?''} (counterfactual QA)
+  \item \emph{``Given this icy road and oncoming truck, what is the safest sequence of manoeuvres?''} (risk-aware planning)
+\end{enumerate}
+Answering such questions requires datasets annotated with event-level causal chains,
+counterfactual premises and outcomes, and multi-agent intention models --- none of which
+are available at scale in the existing literature.
+
+\subsection*{The \lucid{} Dataset}
+
+We introduce \lucid{} (\textbf{L}anguage-grounded \textbf{U}nderstanding for
+\textbf{C}ausal \textbf{I}nference and \textbf{D}ecision-making in autonomous
+\textbf{D}riving), the first dataset specifically designed to support causal and
+counterfactual reasoning for LLM-based autonomous driving. \lucid{} was constructed
+through an 18-month multi-city collection campaign and a rigorous three-stage human
+annotation protocol.
+
+The key properties of \lucid{} are as follows:
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Scale}: 12,847 driving scenarios totalling $\sim$107 hours of driving,
+        yielding 2,312,460 camera frames at 10 FPS across eight synchronized surround-view cameras.
+  \item \textbf{Language}: 847,293 language annotations spanning five types --- causal chain QA,
+        counterfactual QA, planning instructions, scene descriptions, and risk assessments.
+  \item \textbf{Geographic diversity}: Six cities across three continents (Shanghai, Beijing,
+        Singapore, London, San Francisco, Munich), capturing heterogeneous traffic
+        cultures and infrastructure.
+  \item \textbf{Condition diversity}: Seven weather states (clear, cloudy, rainy, snowy,
+        foggy, hazy, mixed) and four lighting states (daytime, dusk/dawn, night, low-light adverse).
+  \item \textbf{Sensor richness}: Eight cameras, five LiDAR units, five mmWave radars,
+        GPS/IMU, and lane-level HD maps with proprietary semantic annotations.
+  \item \textbf{Novelty}: The first dataset with \emph{structured counterfactual QA pairs}
+        and \emph{multi-step causal chain annotations} at scale.
+\end{itemize}
+
+\subsection*{Contributions}
+
+This paper makes the following contributions:
+
+\begin{enumerate}[leftmargin=2em, noitemsep, label=\textbf{C\arabic*.}]
+  \item We design and release \lucid{}, the first large-scale driving dataset
+        with structured causal and counterfactual reasoning annotations
+        (312,456 causal QA pairs and 198,327 counterfactual QA pairs).
+  \item We propose a hierarchical annotation schema that captures driving events at
+        the scene, agent, event, and decision levels, enabling fine-grained evaluation
+        of reasoning depth.
+  \item We introduce four benchmarks tasks --- CSU, CFR, IFN, and RAP --- each with
+        well-defined evaluation protocols and automated metrics.
+  \item We conduct a comprehensive evaluation of six state-of-the-art vision-language
+        models, establishing competitive baselines and identifying key failure modes.
+  \item We publicly release all data, annotation tools, evaluation code, and model
+        checkpoints to facilitate reproducible research.
+\end{enumerate}
+
+\subsection*{Paper Organisation}
+
+The remainder of this paper is organised as follows. Section~\ref{sec:related_work}
+reviews related datasets and methods. Section~\ref{sec:design} describes the design
+objectives and annotation schema of \lucid{}. Section~\ref{sec:collection} details
+the data collection methodology. Section~\ref{sec:annotation} describes the
+annotation pipeline and quality control. Section~\ref{sec:statistics} presents
+dataset statistics. Section~\ref{sec:benchmarks} defines the four benchmark tasks.
+Section~\ref{sec:experiments} reports baseline experiments. Section~\ref{sec:comparison}
+compares \lucid{} with existing datasets. Section~\ref{sec:limitations} discusses
+limitations and future directions, and Section~\ref{sec:conclusion} concludes.
