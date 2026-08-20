@@ -3,7 +3,7 @@
 **LUCID-Drive: A Large-Scale Dataset for Language-grounded Causal Inference
 and Decision-Making in Autonomous Driving**
 
-Wei Zhang, Xinyu Liu, Sarah A. Johnson, Marc Hofmann, Kai Chen
+Bullarao Domathoti, S Janakiraman
 
 ---
 
