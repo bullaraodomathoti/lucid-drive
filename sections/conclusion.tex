@@ -1,0 +1,53 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have introduced \lucid{}, the first large-scale multimodal driving dataset
+specifically designed to support causal and counterfactual reasoning for LLM-based
+autonomous driving. \lucid{} provides 12,847 richly annotated real-world driving
+scenarios collected across six global cities, encompassing 847,293 language annotations
+including 312,456 structured causal chain QA pairs and 198,327 counterfactual QA pairs
+--- annotation types that are absent from all prior datasets.
+
+Through a comprehensive sensor suite (8 cameras, 5 LiDARs, 5 radars, GPS/IMU, HD maps),
+a rigorous three-stage human annotation pipeline involving 234 expert annotators, and
+a systematic quality control protocol achieving $\kappa > 0.80$ across all annotation
+types, \lucid{} establishes a high-quality and reproducible evaluation resource.
+
+Our four benchmark tasks --- Causal Scene Understanding (CSU), Counterfactual
+Reasoning (CFR), Instruction-following Navigation (IFN), and Risk-Aware Planning
+(RAP) --- span the core capabilities required for explainable AD. Baseline evaluation
+of six state-of-the-art vision-language models reveals that even the most capable
+model (GPT-4V) achieves only 58.3\% accuracy on counterfactual reasoning (vs 33.3\%
+random) and 42.7\% instruction success rate, confirming that current models fall
+substantially short of human-level causal reasoning in driving contexts.
+
+\lucid{} is publicly released under a Creative Commons BY-NC 4.0 licence.
+We release the full dataset, annotation tool, evaluation server, baseline code,
+and model checkpoints to enable reproducible research and to lower the barrier
+to entry for the research community. We believe that \lucid{} will catalyse
+progress toward LLM-based autonomous driving systems that are not only capable
+but genuinely explainable, consistent, and trustworthy.
+
+\section*{Acknowledgements}
+
+The authors thank the 234 annotation team members across Shanghai, Munich, and London
+for their diligent work, and the collection driver teams at Alpha, Beta, and Gamma fleets.
+This work was supported in part by the National Natural Science Foundation of China
+(Grant No.\ 62376158), the Swiss National Science Foundation (Grant No.\ 200021-212088),
+and the MIT CSAIL Alliance Program.
+
+\section*{Data Availability}
+
+\lucid{} is publicly available at \url{https://bullaraodomathoti.github.io/lucid-drive/}. The dataset
+is released under Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0).
+Evaluation is conducted via an online server at the same URL.
+
+\section*{Declaration of Competing Interests}
+
+The authors declare that they have no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Author Contributions}
+
+\textbf{Bullarao Domathoti}: Conceptualisation, Methodology, Data Collection, Supervision, Writing --- Original Draft.
+\textbf{S Janakiraman}: Software, Annotation Pipeline, Formal Analysis, Writing --- Review \& Editing.
