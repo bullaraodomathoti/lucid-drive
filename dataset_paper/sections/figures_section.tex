@@ -313,3 +313,28 @@ showing camera fields of view, LiDAR coverage rings, and radar beam directions.
   complementary sensory evidence.}
 \label{fig:sensor_samples}
 \end{figure*}
+
+
+%% ── Figure 4: Multi-Modal Sensor Fusion BEV ─────────────────────────────────
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/sensor_fusion_bev.png}
+\caption{Multi-modal sensor fusion bird's-eye-view (BEV) for a representative
+  \lucid{} scenario (SC-00842; urban intersection; clear, daytime).
+  \textbf{LiDAR}: height-coloured point cloud (plasma colourmap; colourbar at right)
+  spanning $\pm30$\,m lateral and $55$\,m forward.
+  \textbf{Camera FOVs}: solid blue wedges indicate the six standard cameras
+  (FC, RC: $120^{\circ}$; FL/FR/RL/RR: $70^{\circ}$); dashed cyan wedges show
+  the two fisheye cameras (FF/RF: $190^{\circ}$). Camera mount positions are
+  marked by filled circles with LUCID shorthand labels.
+  \textbf{Radar}: green dotted cones show the five mmWave radar FOVs ($60^{\circ}$
+  HPBW); cyan diamonds are radar detection centroids; arrows represent radial
+  velocity vectors scaled to $0.8$\,s lookahead.
+  \textbf{3D tracks}: oriented bounding-box footprints from the LiDAR tracker
+  (cyan: co-moving vehicles; red: oncoming T05); track IDs shown at box corners.
+  \textbf{Yellow}: pedestrian point cluster with 2D bounding box (T02).
+  \textbf{Orange}: ego vehicle with forward-heading arrow.
+  All sensor streams are PTP-synchronised to within 1\,ms; the BEV is rendered
+  in the ego-vehicle frame.}
+\label{fig:fusion_bev}
+\end{figure}
