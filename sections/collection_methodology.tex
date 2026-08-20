@@ -1,0 +1,111 @@
+\section{Data Collection Methodology}
+\label{sec:collection}
+
+\subsection{Collection Fleet and Sensor Configuration}
+\label{ssec:sensor_config}
+
+Data collection was conducted using three instrumented vehicle platforms (designated
+\textit{Alpha}, \textit{Beta}, and \textit{Gamma} fleets), each carrying an identical
+sensor suite to ensure cross-fleet consistency. The sensor configuration was designed
+to provide complete 360\textdegree{} perception coverage at both close and long range:
+
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Cameras}: 8 synchronized cameras at 10 FPS and $1920 \times 1080$~px
+        resolution; 1 front-facing camera (120\textdegree{} FOV), 2 front-angled cameras
+        (70\textdegree{} FOV), 1 rear camera (120\textdegree{} FOV), 2 rear-angled cameras
+        (70\textdegree{} FOV), 1 front fisheye (190\textdegree{} FOV), 1 rear fisheye
+        (190\textdegree{} FOV).
+  \item \textbf{LiDAR}: 1 rooftop spinning LiDAR (64-beam, 20~Hz, 200~m range) and
+        4 corner solid-state LiDARs (128-beam, 25~Hz, 100~m range each) for near-range
+        coverage and redundancy.
+  \item \textbf{Radar}: 5 mmWave radar units (2 front, 2 rear, 1 centre-front) providing
+        velocity-resolved detections up to 250~m, operating under all weather conditions.
+  \item \textbf{GNSS/IMU}: Dual-antenna GNSS with RTK correction ($\pm$2~cm position accuracy)
+        and a 6-DoF IMU at 100~Hz for precise ego-motion estimation.
+  \item \textbf{HD Maps}: Proprietary lane-level HD maps with semantic attributes
+        (lane type, speed limit, road marking, traffic sign) at $\pm$10~cm accuracy.
+\end{itemize}
+
+All sensors are hardware-timestamped and cross-calibrated using a 3D calibration target
+board at the start and end of each recording session. Intrinsic and extrinsic calibration
+parameters are stored per session to account for thermal drift and minor sensor displacement.
+
+\subsection{Collection Locations}
+\label{ssec:collection_locations}
+
+\lucid{} was collected across six cities in three continents, deliberately chosen to
+maximise traffic culture diversity, road infrastructure variability, and climatic range:
+
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Shanghai, China} (4,312 scenarios): Dense urban intersections,
+        mixed traffic with high cyclist and e-scooter density, and diverse pedestrian
+        behaviour. Collected across Puxi (central) and Pudong (suburban) districts.
+  \item \textbf{Beijing, China} (1,847 scenarios): Ring-road highway scenarios and
+        Beijing's distinctive hutong narrow-road navigation. Four-season coverage
+        including heavy winter snow.
+  \item \textbf{Singapore} (1,623 scenarios): Multi-ethnic pedestrian behaviour,
+        tropical rain and haze events, and left-hand driving infrastructure.
+  \item \textbf{London, United Kingdom} (1,789 scenarios): Left-hand driving,
+        roundabout-intensive road network, mixed cyclist traffic, and frequent
+        drizzle and fog conditions.
+  \item \textbf{San Francisco, USA} (1,634 scenarios): Steep gradients, cable-car
+        interactions, and fog-bank maritime weather conditions.
+  \item \textbf{Munich, Germany} (1,642 scenarios): Autobahn high-speed driving,
+        tram intersections, and winter ice/snow scenarios.
+\end{itemize}
+
+\subsection{Collection Protocol}
+\label{ssec:collection_protocol}
+
+Collection sessions were planned using a stratified sampling strategy to ensure
+balanced coverage of scenario categories, weather conditions, and time of day.
+Each collection driver was paired with a safety monitor. Sessions were scheduled
+across all weekday types (Monday--Sunday), time slots (06:00--22:00 for day/dusk;
+22:00--05:00 for night), and weather windows (precipitation events were actively
+targeted using local meteorological forecasts).
+
+Raw sensor streams were recorded at full sensor rate and time-stamped using a
+Precision Time Protocol (PTP) hardware synchronisation network. Each session
+produced an average of 4.7~GB of raw data per minute. Over the 18-month campaign,
+collections totalled approximately 6.2~TB of raw sensor data before preprocessing.
+
+\subsection{Data Preprocessing Pipeline}
+\label{ssec:preprocessing}
+
+Raw data underwent a six-stage preprocessing pipeline:
+
+\begin{enumerate}[leftmargin=2em, noitemsep]
+  \item \textbf{Sensor alignment}: Camera images are undistorted and georectified;
+        LiDAR point clouds are merged into a unified sensor frame using calibrated
+        extrinsics; radar detections are transformed to the ego-vehicle coordinate system.
+  \item \textbf{Scenario segmentation}: Raw continuous recordings are segmented into
+        12--120~second clips using a combination of (a) GPS-based location triggers,
+        (b) event detection (\eg{} hard-brake events from IMU), and (c) manual annotations
+        by the collection team, yielding 14,218 candidate scenarios.
+  \item \textbf{Quality filtering}: Scenarios with persistent sensor failure (camera blur
+        score $> 0.6$, LiDAR dropout $> 15\%$, GNSS accuracy $> 1$~m) are discarded
+        (1,371 scenarios removed). Scenarios with fewer than three annotatable causal
+        events are also filtered (removed 0 after manual review, as this criterion was
+        addressed during scenario targeting).
+  \item \textbf{Anonymisation}: Faces of pedestrians and licence plates are automatically
+        blurred using a dedicated detection model with a recall target of $> 99.5\%$,
+        verified by manual spot-checks on 5\% of frames.
+  \item \textbf{3D object tracking}: A multi-modal detector and tracker generates
+        preliminary 3D bounding boxes and track IDs for all traffic participants,
+        serving as pre-annotations to assist human annotators.
+  \item \textbf{Keyframe selection}: One representative ``annotation keyframe'' per
+        3-second window is selected for scene-level description and agent-level labelling.
+\end{enumerate}
+
+After quality filtering, the final collection contains 12,847 scenarios available
+for annotation.
+
+\subsection{Ethical Considerations}
+\label{ssec:ethics}
+
+Data collection was conducted in full compliance with local privacy laws in all
+six jurisdictions, including GDPR (Europe), PIPL (China), and CCPA (California).
+The collection protocol was reviewed and approved by the institutional ethics
+board (\#IRB-2024-187). All vehicle occupants provided written informed consent.
+Pedestrians and other road users are not individually identifiable in the released
+dataset, as faces and licence plates are anonymised as described above.
