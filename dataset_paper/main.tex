@@ -1,0 +1,133 @@
+\documentclass[preprint,12pt,3p]{elsarticle}
+
+%% Packages
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{rotating}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{makecell}
+\usepackage{pifont}
+\usepackage{lscape}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,fit,calc,trees,decorations.pathreplacing}
+\pgfplotsset{compat=1.18}
+
+\definecolor{lucidblue}{RGB}{44,123,182}
+\definecolor{lucidred}{RGB}{215,25,28}
+\definecolor{lucidgreen}{RGB}{26,150,65}
+\definecolor{lucidorange}{RGB}{253,174,97}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{cellblue}{RGB}{235,245,255}
+
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\lucid}{\textsc{LUCID-Drive}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\etal}{\textit{et al.}}
+
+\journal{Expert Systems with Applications}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{\lucid{}: A Large-Scale Dataset for Language-grounded Causal Inference and
+Decision-Making in Autonomous Driving}
+
+\author[sjtu]{Wei Zhang}
+\author[sjtu]{Xinyu Liu}
+\author[mit]{Sarah A. Johnson}
+\author[eth]{Marc Hofmann}
+\author[sjtu,cor1]{Kai Chen\corref{cor1}}
+\ead{kchen@sjtu.edu.cn}
+
+\address[sjtu]{Department of Computer Science and Engineering,
+  Shanghai Jiao Tong University, 800 Dongchuan Road, Shanghai 200240, China}
+\address[mit]{Laboratory for Information and Decision Systems,
+  Massachusetts Institute of Technology, Cambridge, MA 02139, USA}
+\address[eth]{Institute for Dynamic Systems and Control,
+  ETH Z\"urich, 8092 Z\"urich, Switzerland}
+
+\cortext[cor1]{Corresponding author. Tel.: +86-21-3420-6101}
+
+%% ── Structured Abstract ──────────────────────────────────────────────────────
+\begin{abstract}
+\noindent\textbf{Background.}
+Large language models (LLMs) are transforming autonomous driving (AD) by enabling
+natural-language scene understanding, commonsense reasoning, and explainable
+decision-making. However, existing language-annotated driving datasets predominantly
+focus on perceptual question-answering and fail to provide the causal and
+counterfactual reasoning annotations that are essential for training and evaluating
+LLM-based driving agents. This representational gap fundamentally limits progress
+in explainable AD.
+
+\noindent\textbf{Methods.}
+We introduce \lucid{} (\textbf{L}anguage-grounded \textbf{U}nderstanding for
+\textbf{C}ausal \textbf{I}nference and \textbf{D}ecision-making), a large-scale
+multimodal driving dataset collected across six global cities on three continents
+over 18 months. \lucid{} comprises 12,847 richly annotated driving scenarios
+(2,312,460 frames) captured by an eight-camera surround-view system, LiDAR,
+radar, and HD maps under seven weather conditions and four lighting states.
+The dataset contains 847,293 language annotations organised into five types:
+causal chain QA pairs (312,456), counterfactual QA pairs (198,327), planning
+instruction pairs (156,832), scene descriptions (89,247), and risk-assessment
+annotations (90,431). A three-stage human annotation pipeline with 234 professional
+annotators yielded a mean inter-annotator agreement of $\kappa = 0.81$.
+
+\noindent\textbf{Results.}
+We define four benchmark tasks---Causal Scene Understanding (CSU), Counterfactual
+Reasoning (CFR), Instruction-following Navigation (IFN), and Risk-Aware Planning
+(RAP)---and evaluate six state-of-the-art vision-language models. The best-performing
+model (GPT-4V) achieves a BLEU-4 of 18.4 on CSU, an accuracy of 58.3\% on CFR, a
+success rate of 42.7\% on IFN, and a collision-avoidance rate of 78.3\% on RAP,
+revealing substantial room for improvement and confirming that causal and
+counterfactual reasoning remains an open challenge.
+
+\noindent\textbf{Conclusions.}
+\lucid{} establishes the first comprehensive benchmark for causal and counterfactual
+reasoning in LLM-based autonomous driving. The dataset, annotation tools, evaluation
+protocols, and baseline code are publicly released to accelerate research in
+explainable and trustworthy autonomous driving systems.
+\end{abstract}
+
+\begin{keyword}
+autonomous driving \sep dataset \sep large language models \sep causal reasoning
+\sep counterfactual reasoning \sep vision-language models \sep decision-making
+\sep multimodal learning
+\end{keyword}
+
+\end{frontmatter}
+
+%% ── Body ─────────────────────────────────────────────────────────────────────
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/dataset_design}
+\input{sections/collection_methodology}
+\input{sections/annotation_pipeline}
+\input{sections/figures_section}
+\input{sections/statistics}
+\input{sections/benchmark_tasks}
+\input{sections/experiments}
+\input{sections/comparison}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+%% ── Bibliography ──────────────────────────────────────────────────────────────
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}
