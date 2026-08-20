@@ -1,0 +1,112 @@
+\section{Annotation Pipeline}
+\label{sec:annotation}
+
+\subsection{Annotation Platform}
+\label{ssec:ann_platform}
+
+We developed a bespoke web-based annotation tool, \textit{LUCID-Annotate}, designed
+specifically for causal and counterfactual annotation of driving scenarios. The tool
+renders synchronized multi-camera video alongside LiDAR depth projections, trajectory
+overlays, and the pre-annotated 3D object tracks from the preprocessing pipeline. Key
+features of LUCID-Annotate include:
+
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Causal graph editor}: An interactive directed-graph canvas where annotators
+        create event nodes by selecting time windows and describing observable events,
+        then draw directed edges to represent causal relationships.
+  \item \textbf{Counterfactual wizard}: A guided interface that presents an existing causal
+        QA pair and prompts the annotator to specify a counterfactual premise and answer.
+        Consistency checks warn when the entered premise violates physical constraints.
+  \item \textbf{Agent intention panel}: A structured form listing all tracked agents with
+        dropdown menus for intention labels and a free-text field for ambiguous cases.
+  \item \textbf{Risk matrix tool}: A structured risk-assessment form with numerical sliders
+        (hazard severity 1--5, probability 0--1) linked to a free-text explanation field.
+  \item \textbf{Review interface}: A dedicated quality-control view presenting annotations
+        from two annotators side by side for adjudication.
+\end{itemize}
+
+\subsection{Annotator Recruitment and Training}
+\label{ssec:ann_recruitment}
+
+A total of 234 annotators were recruited across three annotation centres (Shanghai,
+Munich, and London) to ensure geographic representation in annotation decisions.
+Annotator selection required: (a) native or near-native English proficiency; (b) a
+valid driving licence with at least three years of active driving experience; and
+(c) successful completion of a domain-knowledge assessment covering traffic rules,
+common hazard scenarios, and basic causal reasoning concepts.
+
+Training consisted of a structured five-day programme:
+\begin{enumerate}[leftmargin=2em, noitemsep]
+  \item \textbf{Day 1}: Platform orientation and annotation schema walkthrough.
+  \item \textbf{Day 2}: Causal chain annotation practice on 20 gold-standard scenarios.
+  \item \textbf{Day 3}: Counterfactual reasoning training with explicit examples of
+        valid and invalid counterfactual hypotheses.
+  \item \textbf{Day 4}: Risk assessment and planning instruction annotation practice.
+  \item \textbf{Day 5}: Calibration session --- annotators annotate 10 scenarios independently
+        and results are reviewed with supervisors. Annotators with agreement score
+        $\kappa < 0.65$ with the gold standard received supplementary training.
+\end{enumerate}
+
+\subsection{Annotation Workflow}
+\label{ssec:ann_workflow}
+
+Each scenario was assigned to three independent annotators following a structured workflow:
+
+\begin{enumerate}[leftmargin=2em, noitemsep]
+  \item \textbf{Stage 1 --- Primary Annotation}: Two primary annotators independently
+        complete all five annotation levels for their assigned scenario. Estimated time
+        per scenario: 22.4~minutes (mean).
+  \item \textbf{Stage 2 --- Cross-review}: A third annotator reviews both primary annotations,
+        identifies discrepancies, and proposes a merged resolution using majority voting
+        for structured fields and paraphrase alignment for free-text fields.
+  \item \textbf{Stage 3 --- Expert Validation}: For causal chain annotations with disagreement
+        rate $> 25\%$ and for all counterfactual pairs, a domain expert (senior engineer
+        with $> 5$ years in AD) performs a final validation pass. Expert validators
+        reviewed 18.7\% of all scenarios.
+\end{enumerate}
+
+\subsection{Quality Control Metrics}
+\label{ssec:ann_quality}
+
+We computed inter-annotator agreement (IAA) at each annotation level:
+
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Agent intention labels}: Cohen's $\kappa = 0.84$, indicating strong
+        agreement across the 27-class intention vocabulary.
+  \item \textbf{Causal chain structure}: Structural similarity of causal DAGs measured
+        via graph edit distance normalised by graph size; mean similarity = $0.81$.
+  \item \textbf{Causal QA pair answers}: BERTScore F1 between independently authored
+        causal answers = $0.87$ (threshold for acceptance: $> 0.75$).
+  \item \textbf{Counterfactual QA answers}: BERTScore F1 = $0.79$.
+  \item \textbf{Risk assessment scores}: Intraclass correlation coefficient (ICC) = $0.88$
+        for hazard severity; ICC = $0.82$ for probability.
+\end{itemize}
+
+The overall annotation campaign required approximately 45,000 person-hours over
+14 months (the first 4 months were dedicated to platform development and annotator training).
+
+\subsection{Annotation Statistics}
+\label{ssec:ann_stats}
+
+Table~\ref{tab:annotation_stats} summarises the annotation production statistics.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Summary of \lucid{} annotation production statistics.}
+  \label{tab:annotation_stats}
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    \textbf{Annotation Type} & \textbf{Count} & \textbf{Mean per Scenario} & \textbf{Avg.\ Length (words)} \\
+    \midrule
+    Scene descriptions           & 89,247  & 6.9  & 34.2 \\
+    Agent intention labels       & 412,847 & 32.1 & --   \\
+    Causal QA pairs              & 312,456 & 24.3 & 58.7 \\
+    Counterfactual QA pairs      & 198,327 & 15.4 & 52.3 \\
+    Planning instruction pairs   & 156,832 & 12.2 & 47.1 \\
+    Risk assessment annotations  & 90,431  & 7.0  & 41.8 \\
+    \midrule
+    \textbf{Total language annot.}& \textbf{847,293} & \textbf{65.9} & \textbf{50.1} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
