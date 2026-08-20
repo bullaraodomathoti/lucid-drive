@@ -1,0 +1,106 @@
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Autonomous Driving Datasets}
+\label{ssec:rw_datasets}
+
+The autonomous driving community has produced a rich collection of large-scale
+sensor datasets. \textbf{KITTI}~\cite{geiger2012we} introduced stereo and LiDAR
+data for detection and optical flow evaluation and remains a foundational benchmark.
+\textbf{nuScenes}~\cite{caesar2020nuscenes} expanded the modality space with
+360\textdegree{} camera coverage, LiDAR, and radar, providing a standard evaluation
+framework for 3D detection and tracking. The \textbf{Waymo Open Dataset}~\cite{sun2020scalability}
+raised the bar with high-resolution 360\textdegree{} LiDAR and precisely labelled
+multi-class annotations. \textbf{BDD100K}~\cite{yu2020bdd100k} contributed scene
+diversity through 100,000 videos collected across diverse US driving conditions.
+\textbf{Argoverse}~\cite{chang2019argoverse} added HD maps and motion forecasting
+annotations. These datasets focus on geometric and perceptual tasks and do not
+provide the natural-language reasoning annotations required for LLM-based driving.
+
+\subsection{Language-annotated Driving Datasets}
+\label{ssec:rw_lang}
+
+A growing body of work has introduced language annotations into driving datasets.
+\textbf{BDD-X}~\cite{kim2018textual} added textual explanations to 26,000 BDD100K
+driving clips, linking driver actions to concise rationales. \textbf{HAD}~\cite{chen2019had}
+collected 45,000 highway driving clips with natural-language advice for lane changes
+and speed adjustments. \textbf{NuScenes-QA}~\cite{qian2024nuscenes_qa} generated
+459,941 object-level QA pairs over nuScenes using template-based generation, enabling
+evaluation of spatial reasoning. \textbf{NuPrompt}~\cite{wu2024nuprompt} added 35,000
+text prompts describing tracked objects across nuScenes scenes to support
+language-conditioned tracking. \textbf{DRAMA}~\cite{malla2023drama} focused on
+joint risk localisation and captioning with 17,785 QA pairs derived from Japanese
+dashcam footage.
+
+\textbf{DriveLM}~\cite{sima2023drivelm} introduced graph-structured visual QA
+chains over nuScenes and CARLA-simulated data, capturing causal dependencies
+between perception, prediction, and planning questions. \textbf{CoVLA}~\cite{covla2024}
+aligned vision and language for open-vocabulary AD understanding. \textbf{Rank2Tell}~\cite{rank2tell2024}
+tasked models with ranking scene objects by importance and providing explanations.
+\textbf{STRIDE-QA}~\cite{wu2024stride} targeted spatial reasoning with 20,000
+distance and direction questions. \textbf{Box-QAymo}~\cite{boxqaymo2024} focused
+on grounding language to 3D bounding boxes over Waymo scenes.
+
+For edge-case and risk-oriented scenarios, \textbf{WEDGE}~\cite{wedge2024} collected
+5,000 adverse-weather driving segments with language annotations,
+\textbf{IEDD}~\cite{iedd2024} provided 8,000 intersection edge-case scenarios, and
+\textbf{PotentialRiskQA}~\cite{potentialrisk2024} annotated 6,000 risk QA pairs.
+\textbf{CARScenes}~\cite{carscenes2024} contributed scene-understanding descriptions
+across 14,000 samples. The \textbf{Driving-with-LLMs} benchmark~\cite{drivingwithllms2024}
+evaluated LLM decision-making through abstracted numerical scene representations.
+
+Despite this impressive body of work, no existing dataset provides \emph{structured
+causal chain annotations} that link individual events to driving decisions, or
+\emph{paired counterfactual premises and outcomes} that enable rigorous evaluation of
+hypothetical reasoning. \lucid{} fills this gap.
+
+\subsection{Large Language Models for Autonomous Driving}
+\label{ssec:rw_llm}
+
+LLMs have been applied to autonomous driving along multiple axes. As \emph{planning
+agents}, models such as GPT-Driver~\cite{mao2023gptdriver} and DriveGPT4~\cite{xu2023drivegpt4}
+translate scene descriptions into control signals. As \emph{reasoning engines},
+LLM-integrated systems such as DiMA~\cite{ding2023dima} and ELM~\cite{zhou2024elm}
+leverage commonsense knowledge for object relationship modelling and anticipation.
+As \emph{evaluation judges}, LLMs have been used to score the quality of
+driving decisions~\cite{drivingwithllms2024}. Multi-modal models including
+LLaVA~\cite{liu2023visual}, InstructBLIP~\cite{dai2023instructblip}, and
+BLIP-2~\cite{li2023blip2} ground language in visual perception, making them
+natural candidates for vision-language driving tasks.
+
+\textbf{Multimodal LLMs for driving.} GPT-4V~\cite{openai2023gpt4} has shown
+strong zero-shot performance on driving scenario understanding when provided with
+image context and carefully crafted prompts. DriveLM-Agent~\cite{sima2023drivelm}
+fine-tuned a multimodal LLM on the DriveLM dataset and achieved competitive
+VQA performance. These works confirm that multimodal LLMs can serve as capable
+AD reasoning agents; however, their evaluation on causal and counterfactual tasks
+remains underexplored due to the absence of a suitable benchmark dataset.
+
+\subsection{Causal and Counterfactual Reasoning}
+\label{ssec:rw_causal}
+
+Causal reasoning---the ability to infer cause-effect relationships from observed
+data---is foundational to robust decision-making under uncertainty~\cite{pearl2009causality}.
+Counterfactual reasoning, which considers what \emph{would have happened} under
+an alternative course of events~\cite{lewis1973counterfactuals}, is a critical
+component of human-level safety analysis. In autonomous driving, causal reasoning
+supports post-incident investigation, safety validation, and interpretability by
+mapping sensor observations to structured causal graphs~\cite{scholkopf2021toward}.
+
+Prior work has incorporated causal structure into perception models~\cite{ding2023dima}
+and trajectory prediction~\cite{yuan2021agent}. However, language-grounded causal
+reasoning datasets that pair visual observations with natural-language causal
+explanations and counterfactual hypotheses are absent from the literature.
+\lucid{} provides this missing resource by pairing each driving scenario
+with expert-authored causal chains and counterfactual QA pairs, enabling
+direct evaluation of LLM causal reasoning capabilities in a safety-critical setting.
+
+\subsection{Summary and Positioning of \lucid{}}
+\label{ssec:rw_summary}
+
+Table~\ref{tab:related_comparison} in Section~\ref{sec:comparison} provides a
+comprehensive feature comparison of \lucid{} against the most relevant existing
+datasets. In summary, \lucid{} is distinguished by (1) its scale---the largest
+collection of language annotations for AD; (2) its annotation novelty---the first
+causal chain and counterfactual QA pairs at scale; (3) its geographic and
+environmental diversity; and (4) its four-task benchmark with automated metrics.
