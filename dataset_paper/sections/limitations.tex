@@ -1,0 +1,54 @@
+\section{Limitations and Future Directions}
+\label{sec:limitations}
+
+\subsection{Current Limitations}
+\label{ssec:limitations_current}
+
+\paragraph{Annotation subjectivity.} Causal reasoning inherently admits multiple
+valid interpretations. Although our three-stage quality control pipeline and
+inter-annotator agreement metrics ($\kappa = 0.81$--$0.88$) indicate strong consensus,
+some ambiguous scenarios may have been resolved with a systematic bias reflecting
+the training received by annotators at a specific annotation centre. Future work
+should investigate cross-cultural variation in causal attribution as an independent
+research problem.
+
+\paragraph{Geographic imbalance.} While \lucid{} spans six cities, Shanghai
+contributes 33.6\% of all scenarios --- a consequence of the largest fleet deployment
+in that city during the initial collection phase. Future extensions should target
+additional cities in Africa, Latin America, and South/Southeast Asia, which are
+significantly underrepresented in existing AD datasets.
+
+\paragraph{LiDAR-camera synchronisation.} The rooftop LiDAR operates at 20~Hz while
+cameras operate at 10~FPS; sub-frame temporal misalignment of up to 50~ms may
+introduce minor artefacts in LiDAR-projected depth images used for annotation.
+A next-generation collection platform with hardware-triggered frame synchronisation
+is under development.
+
+\paragraph{Simulation gap.} All \lucid{} scenarios are collected from real-world
+driving; the dataset does not include synthetic data. While this ensures ecological
+validity, it limits the coverage of truly extreme scenarios (\eg{} vehicle rollovers,
+bridge collapse) that are too dangerous to collect in the field. A synthetic
+augmentation study using CARLA-simulated edge cases is planned.
+
+\paragraph{Language coverage.} All annotations are authored in English. Extending
+\lucid{} to Mandarin Chinese, German, and Singaporean English would support
+evaluation of multilingual LLMs and mitigate potential bias toward English-centric
+models.
+
+\subsection{Future Directions}
+\label{ssec:limitations_future}
+
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Causal structure prediction}: Training models to generate CEG graphs
+        from raw sensor data, rather than text-only QA, would enable richer causal
+        representation learning.
+  \item \textbf{Active learning for annotation}: The annotation cost of \lucid{}
+        ($\sim$45,000 person-hours) motivates research into active learning strategies
+        that prioritise high-value scenarios for human annotation.
+  \item \textbf{Embodied agent evaluation}: Future work will extend the IFN task to
+        closed-loop evaluation in CARLA, enabling end-to-end assessment of instruction-conditioned
+        driving policies.
+  \item \textbf{Temporal counterfactuals}: Current counterfactual pairs consider
+        single-step interventions; structured temporal counterfactuals (\eg{} ``What if
+        the light had changed 5 seconds earlier?'') would test multi-step causal reasoning.
+\end{itemize}
