@@ -1,0 +1,141 @@
+\section{Benchmark Tasks}
+\label{sec:benchmarks}
+
+We define four benchmark tasks on \lucid{}, each designed to probe a distinct
+capability required for causal and counterfactual reasoning in LLM-based autonomous driving.
+All tasks use the official train/val/test split described in Section~\ref{sec:statistics}.
+
+\subsection{Task 1: Causal Scene Understanding (CSU)}
+\label{ssec:task_csu}
+
+\paragraph{Definition.}
+Given a multi-camera image sequence of a driving scenario and a causal question
+(\eg{} ``Why did the ego vehicle apply emergency braking at $t = 12.3$~s?''),
+the model must generate a natural language answer that correctly identifies the
+causal antecedents and their relationships.
+
+\paragraph{Input.}
+A sequence of 16 keyframes (8 cameras $\times$ 2 timesteps at $-1.5$~s and $0$~s
+relative to the query time) plus the causal question string.
+
+\paragraph{Output.}
+A free-form natural language causal explanation.
+
+\paragraph{Evaluation Metrics.}
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{BLEU-4}~\cite{papineni2002bleu}: N-gram overlap against reference answers.
+  \item \textbf{CIDEr}~\cite{vedantam2015cider}: Consensus-based image description evaluation,
+        adapted for multi-reference QA.
+  \item \textbf{METEOR}~\cite{banerjee2005meteor}: Precision/recall with stemming and synonymy.
+  \item \textbf{BERTScore F1}: Semantic similarity using contextual embeddings.
+  \item \textbf{Human Evaluation}: Rated on a 5-point Likert scale for causal correctness,
+        completeness, and fluency by two independent evaluators per answer.
+\end{itemize}
+
+\paragraph{Difficulty split.}
+The CSU test set is stratified by causal chain length into three difficulty tiers:
+\textit{Easy} (chain length $\le 3$: 31.4\% of questions), \textit{Medium} (length 4--7:
+48.2\%), and \textit{Hard} (length $\ge 8$: 20.4\%).
+
+\subsection{Task 2: Counterfactual Reasoning (CFR)}
+\label{ssec:task_cfr}
+
+\paragraph{Definition.}
+Given a scene and a counterfactual premise (\eg{} ``What would have happened if the
+fog had reduced visibility to under 20~m?''), the model must select the correct
+outcome from three plausible candidates (multiple-choice format) and optionally
+provide a short free-text justification.
+
+\paragraph{Input.}
+A multi-camera image sequence (same format as CSU) plus a counterfactual premise
+string and three candidate outcome strings (one correct, two plausible distractors).
+
+\paragraph{Output.}
+Selected outcome label (A/B/C) and optional justification text.
+
+\paragraph{Evaluation Metrics.}
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Accuracy}: Fraction of correctly selected outcomes (primary metric).
+  \item \textbf{Macro-F1}: Class-balanced F1 across outcome categories.
+  \item \textbf{Consistency Score}: Proportion of question pairs where the model's
+        counterfactual answers are mutually consistent (anti-symmetric: if ``fog causes
+        braking'' then ``no fog implies no braking''). Consistency is verified on 15,847
+        paired counterfactual questions in the test split.
+\end{itemize}
+
+\paragraph{Distractor design.}
+Distractors were designed by domain expert annotators to be superficially plausible
+but causally incorrect, requiring genuine counterfactual reasoning rather than
+surface-level pattern matching. Three distractor categories are used: (a) causal
+reversal (swapping cause and effect), (b) confound substitution (replacing the true
+cause with a correlated but non-causal factor), and (c) magnitude error (correct
+direction but wrong severity of outcome).
+
+\subsection{Task 3: Instruction-following Navigation (IFN)}
+\label{ssec:task_ifn}
+
+\paragraph{Definition.}
+Given a natural-language navigation instruction (\eg{} ``Slow to below 30~km/h,
+yield to the pedestrian on the right, and merge into the left lane after the
+junction''), the model must generate a sequence of waypoints and a textual
+execution report describing how it followed the instruction.
+
+\paragraph{Input.}
+Multi-camera images (8 cameras at $t=0$~s), a language navigation instruction,
+ego-vehicle state (speed, heading, position on HD map), and a bird's-eye-view
+semantic map patch ($50 \times 50$~m, 0.5~m/px).
+
+\paragraph{Output.}
+A sequence of 10 future waypoints at 0.5~Hz (5~s horizon) and a textual
+execution report.
+
+\paragraph{Evaluation Metrics.}
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Instruction Success Rate (ISR)}: Fraction of trials where
+        the generated waypoints satisfy all constraints specified in the instruction
+        (\eg{} speed limit, required yield, lane target), evaluated by a rule-based
+        constraint checker.
+  \item \textbf{Path Quality (PQ)}: ADE (Average Displacement Error) in metres
+        between the generated waypoints and a human-expert reference trajectory.
+  \item \textbf{Report BLEU-4}: N-gram overlap of the execution report with
+        a reference report.
+\end{itemize}
+
+\subsection{Task 4: Risk-Aware Planning (RAP)}
+\label{ssec:task_rap}
+
+\paragraph{Definition.}
+Given a scenario depicting a high-risk driving situation (\eg{} an icy road with
+an oncoming vehicle swerving across the centreline), the model must (a) identify the
+primary risk, (b) assign a severity score (1--5), (c) select the safest available
+manoeuvre from a structured action vocabulary (18 actions), and (d) generate a
+language explanation for the chosen action.
+
+\paragraph{Input.}
+Multi-camera images (8 cameras, 3 keyframes at $-3$~s, $-1.5$~s, $0$~s), ego-vehicle
+state, and a structured risk context (road type, speed limit, weather condition).
+
+\paragraph{Output.}
+Severity score (integer), action label (from vocabulary), and textual explanation.
+
+\paragraph{Evaluation Metrics.}
+\begin{itemize}[leftmargin=2em, noitemsep]
+  \item \textbf{Collision Avoidance Rate (CAR)}: Fraction of scenarios where the
+        selected action is judged collision-free by a physics-based simulator seeded
+        with the scenario's sensor data.
+  \item \textbf{Risk Score Accuracy}: Mean absolute error (MAE) between predicted and
+        ground-truth severity scores.
+  \item \textbf{Action Accuracy}: Fraction of exactly matching action labels.
+  \item \textbf{Explanation Quality (EQ)}: Human-rated quality of the explanation
+        on a 5-point scale for correctness, specificity, and fluency.
+\end{itemize}
+
+\subsection{Baseline Evaluation Protocol}
+\label{ssec:benchmark_protocol}
+
+All baselines are evaluated in a zero-shot setting (no task-specific fine-tuning
+on \lucid{}) unless stated otherwise. For fair comparison, each model receives
+identical inputs (image sequences, text prompts) formatted using a standardised
+prompt template. For models with limited context windows, the number of input images
+is reduced proportionally and reported alongside results. All reported numbers
+are on the held-out test split evaluated via the official server.
