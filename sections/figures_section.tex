@@ -304,7 +304,11 @@ showing camera fields of view, LiDAR coverage rings, and radar beam directions.
 \caption{Representative sensor data samples from a single \lucid{} scenario
   (Scenario ID: SC-00842; urban intersection, daytime, clear weather).
   All three modalities are hardware-synchronised to within 1\,ms via PTP.
-  \textbf{(a)} Camera RGB frame with 2D bounding-box annotations.
+  \textbf{(a)} Real nuScenes surround-view camera frames from all six
+  calibrated RGB cameras (1600$\times$900 each): \textit{Front Left},
+  \textit{Front}, \textit{Front Right} (top row) and \textit{Back Left},
+  \textit{Back}, \textit{Back Right} (bottom row), providing 360\textdegree{}
+  visual coverage of the scene.
   \textbf{(b)} 64-beam LiDAR BEV point cloud with projected 3D track boxes.
   \textbf{(c)} Front-centre radar range--Doppler map and BEV detection plot
   with radial-velocity vectors.
