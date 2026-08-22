@@ -323,20 +323,23 @@ showing camera fields of view, LiDAR coverage rings, and radar beam directions.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/sensor_fusion_bev.png}
-\caption{Multi-modal sensor fusion bird's-eye-view (BEV) rendered from real
-  nuScenes data (scene \texttt{n015-2018-07-24-11-22-45+0800}, urban driving,
-  Singapore).
-  \textbf{LiDAR}: 33{,}880 height-coloured points (plasma colourmap, colourbar
-  at right) from a Velodyne HDL-32E sweep spanning $\pm50$\,m.
-  \textbf{Camera FOVs}: six colour-coded wedges ($70^{\circ}$ each) show the
-  surround-view camera coverage; labels denote mounting positions
-  (FRONT, FRONT\_LEFT, FRONT\_RIGHT, BACK, BACK\_LEFT, BACK\_RIGHT).
-  \textbf{3D annotations}: 69 oriented bounding-box footprints (coloured by
-  class: pedestrian, car, truck, bus, barrier, traffic cone, \emph{etc.})
-  projected into the BEV plane from ground-truth 3D annotations.
-  \textbf{Radar}: 17 cyan diamond markers indicate instances with associated
-  radar returns; velocity arrows are scaled to a $1.5$\,s lookahead.
-  \textbf{Yellow}: ego vehicle with forward-heading arrow.
-  All modalities are aligned in the ego-vehicle reference frame.}
+\caption{Multi-modal sensor fusion bird's-eye-view (BEV) with real camera
+  crops of detected objects, rendered from nuScenes scene
+  \texttt{n015-2018-07-24-11-22-45+0800} (urban driving, Singapore).
+  \textbf{Left -- BEV}: 33{,}880 height-coloured LiDAR points (plasma colourmap)
+  from a Velodyne HDL-32E sweep spanning $\pm50$\,m.
+  Six colour-coded wedges show camera FOV coverage; dashed rings mark
+  10--50\,m range.
+  Oriented bounding-box footprints (coloured by class: car, truck, pedestrian,
+  barrier, traffic cone, \emph{etc.}) are projected from ground-truth 3D
+  annotations; cyan diamonds with velocity arrows mark radar-confirmed
+  detections.
+  \textbf{Right -- Camera crops}: real image patches extracted from the
+  six surround-view cameras by projecting each annotated 3D centre through
+  the calibrated camera intrinsics and extrinsics.
+  Dashed coloured lines link each BEV detection to its corresponding
+  camera crop.
+  All modalities are temporally synchronised and expressed in the
+  ego-vehicle reference frame.}
 \label{fig:fusion_bev}
 \end{figure}
