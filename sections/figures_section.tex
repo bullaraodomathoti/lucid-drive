@@ -323,22 +323,20 @@ showing camera fields of view, LiDAR coverage rings, and radar beam directions.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/sensor_fusion_bev.png}
-\caption{Multi-modal sensor fusion bird's-eye-view (BEV) for a representative
-  \lucid{} scenario (SC-00842; urban intersection; clear, daytime).
-  \textbf{LiDAR}: height-coloured point cloud (plasma colourmap; colourbar at right)
-  spanning $\pm30$\,m lateral and $55$\,m forward.
-  \textbf{Camera FOVs}: solid blue wedges indicate the six standard cameras
-  (FC, RC: $120^{\circ}$; FL/FR/RL/RR: $70^{\circ}$); dashed cyan wedges show
-  the two fisheye cameras (FF/RF: $190^{\circ}$). Camera mount positions are
-  marked by filled circles with LUCID shorthand labels.
-  \textbf{Radar}: green dotted cones show the five mmWave radar FOVs ($60^{\circ}$
-  HPBW); cyan diamonds are radar detection centroids; arrows represent radial
-  velocity vectors scaled to $0.8$\,s lookahead.
-  \textbf{3D tracks}: oriented bounding-box footprints from the LiDAR tracker
-  (cyan: co-moving vehicles; red: oncoming T05); track IDs shown at box corners.
-  \textbf{Yellow}: pedestrian point cluster with 2D bounding box (T02).
-  \textbf{Orange}: ego vehicle with forward-heading arrow.
-  All sensor streams are PTP-synchronised to within 1\,ms; the BEV is rendered
-  in the ego-vehicle frame.}
+\caption{Multi-modal sensor fusion bird's-eye-view (BEV) rendered from real
+  nuScenes data (scene \texttt{n015-2018-07-24-11-22-45+0800}, urban driving,
+  Singapore).
+  \textbf{LiDAR}: 33{,}880 height-coloured points (plasma colourmap, colourbar
+  at right) from a Velodyne HDL-32E sweep spanning $\pm50$\,m.
+  \textbf{Camera FOVs}: six colour-coded wedges ($70^{\circ}$ each) show the
+  surround-view camera coverage; labels denote mounting positions
+  (FRONT, FRONT\_LEFT, FRONT\_RIGHT, BACK, BACK\_LEFT, BACK\_RIGHT).
+  \textbf{3D annotations}: 69 oriented bounding-box footprints (coloured by
+  class: pedestrian, car, truck, bus, barrier, traffic cone, \emph{etc.})
+  projected into the BEV plane from ground-truth 3D annotations.
+  \textbf{Radar}: 17 cyan diamond markers indicate instances with associated
+  radar returns; velocity arrows are scaled to a $1.5$\,s lookahead.
+  \textbf{Yellow}: ego vehicle with forward-heading arrow.
+  All modalities are aligned in the ego-vehicle reference frame.}
 \label{fig:fusion_bev}
 \end{figure}
